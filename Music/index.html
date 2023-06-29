@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="description" content="Music Player">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Polu Player">
+  <meta property="og:description" content="A Music Player Exclusively Build for Pallab Santra">
+  <meta property="og:image" content="./Music/album-cover2.png">
+  <meta property="og:url" content="https://happybirthdayplayer.vercel.app/Music">
+  
+  
+  <title>Birthday Player</title>
+  <style>
+body {
+      font-family: Arial, Sans-Serif;
+      margin: 0;
+      padding: 0;
+      background-color:#000000;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    .music-player {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 300px;
+      padding: 20px;
+      background-color: #ffe7e79d;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .music-player img {
+      width: 200px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .music-player h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .music-controls {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .music-controls button {
+      margin: 0 10px;
+      padding: 10px;
+      border: none;
+      background-color: #333;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .music-controls button:hover {
+      background-color: #555;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background-color: #eee;
+      margin-top: 10px;
+      border-radius: 4px;
+    }
+
+    .progress-bar .progress {
+      height: 100%;
+      background-color: #333;
+      border-radius: 4px;
+      transition: width 0.1s linear;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <div class="music-player">
+      <img id="album-cover" src="album-cover.jpg" alt="Album Cover">
+      <h2 id="song-title">Song Title</h2>
+      <audio id="audio"></audio>
+      <div class="progress-bar">
+        <div id="progress" class="progress"></div>
+      </div>
+      <div class="music-controls">
+        <button onclick="previousSong()">&lt;&lt;</button>
+        <button onclick="togglePlayPause()">Play/Pause</button>
+        <button onclick="nextSong()">&gt;&gt;</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var audio = document.getElementById("audio");
+    var isPlaying = false;
+    var currentSongIndex = 0;
+    var songs = [
+      {
+        title: "Birthday 1",
+        source: "song1.mp3",
+        cover: "album-cover1.png"
+        
+      },
+      {
+        title: "Birthday 2",
+        source: "song2.mp3",
+        cover: "album-cover2.png"
+      },
+      {
+        title: "Birthday 3",
+        source: "song3.mp3",
+        cover: "album-cover3.png"
+      },
+            {
+        title: "Birthday 4",
+        source: "song4.mp3",
+        cover: "album-cover4.png"
+      }
+    ];
+
+    function togglePlayPause() {
+      if (isPlaying) {
+        audio.pause();
+        isPlaying = false;
+      } else {
+        audio.play();
+        isPlaying = true;
+      }
+    }
+
+    function nextSong() {
+      currentSongIndex = (currentSongIndex + 1) % songs.length;
+      loadSong(currentSongIndex);
+    }
+
+    function previousSong() {
+      currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+      loadSong(currentSongIndex);
+    }
+
+    function loadSong(index) {
+      var song = songs[index];
+      audio.src = song.source;
+      document.getElementById("album-cover").src = song.cover;
+      document.getElementById("song-title").textContent = song.title;
+
+      if (isPlaying) {
+        audio.play();
+      }
+    }
+
+    audio.addEventListener("timeupdate", updateProgressBar);
+
+    function updateProgressBar() {
+      var progress = (audio.currentTime / audio.duration) * 100;
+      document.getElementById("progress").style.width = progress + "%";
+    }
+    
+    // Load initial song
+    loadSong(currentSongIndex);
+  </script>
+</body>
+</html>
